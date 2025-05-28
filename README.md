@@ -65,18 +65,20 @@ T-Copilot is evaluated across 12 diverse benchmarks:
 
 ### 📈 Performance Evaluation
 - 2.2%-34.5% accuracy gain on the original Pilot models accross differnt tasks and backbone model tyles
+![exp1](imgs/exp1.png)
+
 - Outperforms stronger LLMs:
   - `Qwen2.5-7B + T-Copilot-3B` > `Qwen2.5-14B`
   - `Qwen2.5-3B + T-Copilot-3B` > `Qwen2.5-7B`
   - `LLaMA-3.2-3B + T-Copilot-3B` > `LLaMA-3.1-8B`
 
-![exp1](imgs/exp1.png)
-![exp2](imgs/exp2.png)
+  ![exp2](imgs/exp2.png)
 
 ---
 ### 🔍 Analyses on Logits Rectification
-
+- Logits Correction by Copilot across differnt models and task categories.
 ![analysis1](imgs/analysis1.png)
+- An illustrated example for the logits rectification process by the Copilot model. 
 ![analysis2](imgs/analysis2.png)
 
 ---
@@ -85,6 +87,8 @@ T-Copilot is evaluated across 12 diverse benchmarks:
 
 - **Training overhead**: marginal ~4% extra overall runtime compred to the original Pilot model, outperform other layer adaptation baselines.
 - **Inference throughput**: Comparable to baseline Pilot models.
+![effeciency](imgs/effeciency.png)
+
 - **Transferability**: One Copilot can be directly generalize across similar Pilot models without additional training.
 - **Scalability**: Applicable across T5, FLAN-T5, LLaMA, Qwen, and other transformer architectures.
 
