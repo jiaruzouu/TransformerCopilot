@@ -15,16 +15,25 @@ We introduce a novel Pilot-Copilot learning framework, named Transformer Copilot
 
 ### 🧾 Mistake Log 
 
-$M_T = \bigg\{ \left(\widetilde{X}_t, \ h_t(\widetilde{X}_t; \theta^P_{t-1}), \ \ell_t(p_t, \hat{p}_t) \right) \bigg\}_{t=1}^T$
+<img src="https://latex.codecogs.com/png.image?\dpi{150} M_T = \bigg\{ \left(\widetilde{X}_t, \ h_t(\widetilde{X}_t; \theta^P_{t-1}), \ \ell_t(p_t, \hat{p}_t) \right) \bigg\}_{t=1}^T" alt="Mistake Log Equation"/>
+
+
 
 We first introduces the *Mistake Log*, a structured log recording the "memory" of Pilot model's training-time behavior. It includes three components:
 - **Input Representations $\widetilde{X}$**: Contextual token encodings for the inputs.
 - **Internal Rationales $h$**: Layer-wise hidden states from the Pilot model.
 
-  $ h_{t}(\widetilde{X}_t; \theta^P_{t-1}) = \Big\{ h_{t,i}(\widetilde{X}_t; \theta^P_{t-1})\Big\}_{i=1}^n, \quad \text{with } h_{t,i}( \widetilde{X}_t; \theta^P_{t-1}) = \left\{ h_{t,i, l}(\widetilde{X}_t; \theta^P_{t-1} ) \right\}_{l=1}^{L^P}. $
+  <p align="center">
+    <img src="https://latex.codecogs.com/png.image?\dpi{150} h_{t}(\widetilde{X}_t;%20\theta^P_{t-1})%20=%20\Big\{%20h_{t,i}(\widetilde{X}_t;%20\theta^P_{t-1})\Big\}_{i=1}^n,%20\quad%20\text{with%20}%20h_{t,i}(\widetilde{X}_t;%20\theta^P_{t-1})%20=%20\left\{%20h_{t,i,%20l}(\widetilde{X}_t;%20\theta^P_{t-1}%20)%20\right\}_{l=1}^{L^P}." alt="Hidden State Definition"/>
+  </p>
+
+
 - **Discrepency Sequences (Mistakes) $\ell$**: Token-Level discrepancy signals quantifying the Pilot model's prediction error.
 
-  $\ell_t(p_t, \hat{p}_t) = \left\{ \ell_t(p_{t,i}, \hat{p}_{t,i}) \right\}_{i=1}^n, \quad \text{with } \ell_t(p_{t,i}, \hat{p}_{t,i}) = p_{t,i} - \hat{p}_{t,i}.$
+  <p align="center">
+    <img src="https://latex.codecogs.com/png.image?\dpi{150} \ell_t(p_t,%20\hat{p}_t)%20=%20\left\{%20\ell_t(p_{t,i},%20\hat{p}_{t,i})%20\right\}_{i=1}^n,%20\quad%20\text{with%20}%20\ell_t(p_{t,i},%20\hat{p}_{t,i})%20=%20p_{t,i}%20-%20\hat{p}_{t,i}." alt="Token-level Error Equation"/>
+  </p>
+
 
 > The Mistake Log captures model-internal "reflection" and enables informed rectification at inference time.
 ---
