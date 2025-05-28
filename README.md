@@ -5,11 +5,90 @@
 [![Paper](https://img.shields.io/badge/arXiv-paper-b31b1b)](https://www.arxiv.org/pdf/2505.16270) &nbsp;&nbsp;
 
 
-## **Introduction**
+## 📖 **Introduction**
 We introduce a novel Pilot-Copilot learning framework, named Transformer Copilot, that learns from a language model's "mistake log" during fine-tuning. By leveraging the Pilot model's learning signals, the Copilot model rectifies the Pilot model's output logits at inference time to improve generation accuracy. Our approach achieves notable gains on challenging reasoning tasks and downstream applications while preserving strong transferability and scalibility.
 
-## **News**
-- We've realeased our [paper](https://www.arxiv.org/pdf/2505.16270) on arXiv. Our code will be released soon! Stay Tuned!
+## 🔥 **News**
+[5/26/25] We've realeased our [paper](https://www.arxiv.org/pdf/2505.16270) on arXiv. Our code will be soon updated. Stay Tuned!
+
+## 🚀 **Key Features**
+
+### 🧾 Mistake Log 
+
+$M_T = \bigg\{ \left(\widetilde{X}_t, \ h_t(\widetilde{X}_t; \theta^P_{t-1}), \ \ell_t(p_t, \hat{p}_t) \right) \bigg\}_{t=1}^T$
+
+We first introduces the *Mistake Log*, a structured log recording the "memory" of Pilot model's training-time behavior. It includes three components:
+- **Input Representations $\widetilde{X}$**: Contextual token encodings for the inputs.
+- **Internal Rationales $h$**: Layer-wise hidden states from the Pilot model.
+
+  $ h_{t}(\widetilde{X}_t; \theta^P_{t-1}) = \Big\{ h_{t,i}(\widetilde{X}_t; \theta^P_{t-1})\Big\}_{i=1}^n, \quad \text{with } h_{t,i}( \widetilde{X}_t; \theta^P_{t-1}) = \left\{ h_{t,i, l}(\widetilde{X}_t; \theta^P_{t-1} ) \right\}_{l=1}^{L^P}. $
+- **Discrepency Sequences (Mistakes) $\ell$**: Token-Level discrepancy signals quantifying the Pilot model's prediction error.
+
+  $\ell_t(p_t, \hat{p}_t) = \left\{ \ell_t(p_{t,i}, \hat{p}_{t,i}) \right\}_{i=1}^n, \quad \text{with } \ell_t(p_{t,i}, \hat{p}_{t,i}) = p_{t,i} - \hat{p}_{t,i}.$
+
+> The Mistake Log captures model-internal "reflection" and enables informed rectification at inference time.
+---
+### 🧠 Pilot-Copilot Framework
+
+- **Pilot Model**: A Transformer (e.g., FLAN-T5, LLaMA, Qwen) trained via supervised fine-tuning (SFT)
+- **Copilot Model**:
+  - A transduction neural network built upon the Pilot’s decoder module
+  - Receives Mistake Log as input
+  - Learns to predict error patterns and provide **logits corrections**
+- **Logits Fusion**: Combines Pilot and Copilot logits for better next-token predictions
+
+---
+### 🔮 New Training and Inference Paradigm
+
+![algorithm](imgs/algorithm.png)
+
+#### **Training Paradigm**
+- Pilot model minimizes cross-entropy loss on token prediction
+- Mistake Log is updated each round with updated contextual and internal representations
+- Copilot model learns from the Mistake Log and minimizes RMSE on logits rectification
+
+#### **Inference Paradigm**
+- At each step, the Pilot model generates token logits as usual
+- The Copilot model then rectify the Pilot's logits prediction
+- The final logits are fused together for decoding and next-token generation
+
+> The whole generation process repeats auto-regressively and the Copilot model is able to actively refine the Pilot model's generation without retraining or modifying the original model.
+
+## 📊 Evaluation
+T-Copilot is evaluated across 12 diverse benchmarks:
+
+- Commonsense Reasoning: PIQA, HellaSwag, WinoGrande, BoolQ, SIQA, OBQA
+
+- Arithmetic Reasoning: GSM8K, SVAMP, AQuA, MAWPS
+
+- Recommendation: Beauty, LastFM
+
+### 📈 Performance Evaluation
+- 2.2%-34.5% accuracy gain on the original Pilot models accross differnt tasks and backbone model tyles
+- Outperforms stronger LLMs:
+  - `Qwen2.5-7B + T-Copilot-3B` > `Qwen2.5-14B`
+  - `Qwen2.5-3B + T-Copilot-3B` > `Qwen2.5-7B`
+  - `LLaMA-3.2-3B + T-Copilot-3B` > `LLaMA-3.1-8B`
+
+![exp1](imgs/exp1.png)
+![exp2](imgs/exp2.png)
+
+---
+### 🔍 Analyses on Logits Rectification
+
+![analysis1](imgs/analysis1.png)
+![analysis2](imgs/analysis2.png)
+
+---
+
+### ⚙️ Efficiency, Transferability & Scalability
+
+- **Training overhead**: marginal ~4% extra overall runtime compred to the original Pilot model, outperform other layer adaptation baselines.
+- **Inference throughput**: Comparable to baseline Pilot models.
+- **Transferability**: One Copilot can be directly generalize across similar Pilot models without additional training.
+- **Scalability**: Applicable across T5, FLAN-T5, LLaMA, Qwen, and other transformer architectures.
+
+
 
 ## **Citation**
 ```
