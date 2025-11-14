@@ -1,15 +1,17 @@
 # Transformer Copilot: Learning from The Mistake Log in LLM Fine-tuning
 
-![overall_framework](imgs/overall_framework.png)
+![overall_framework](assets/overall_framework.png)
 
 [![Paper](https://img.shields.io/badge/arXiv-paper-b31b1b)](https://www.arxiv.org/pdf/2505.16270) &nbsp;&nbsp;
 
 
-## 📖 **Introduction**
-We introduce a novel Pilot-Copilot learning framework, named Transformer Copilot, that learns from a language model's "mistake log" during fine-tuning. By leveraging the Pilot model's learning signals, the Copilot model rectifies the Pilot model's output logits at inference time to improve generation accuracy. Our approach achieves notable gains on challenging reasoning tasks and downstream applications while preserving strong transferability and scalibility.
-
 ## 🔥 **News**
 [5/26/25] We've realeased our [paper](https://www.arxiv.org/pdf/2505.16270) on arXiv. Our code will be soon updated. Stay Tuned!
+
+[9/17/25] Transformer Copilot has been accepted at NeurIPS 2025 as a **Spotlight**! Our code has also been released!
+
+## 📖 **Introduction**
+We introduce a novel Pilot-Copilot learning framework, named Transformer Copilot, that learns from a language model's "mistake log" during fine-tuning. By leveraging the Pilot model's learning signals, the Copilot model rectifies the Pilot model's output logits at inference time to improve generation accuracy. Our approach achieves notable gains on challenging reasoning tasks and downstream applications while preserving strong transferability and scalibility.
 
 ## 🚀 **Key Features**
 
@@ -21,7 +23,7 @@ We first introduces the *Mistake Log*, a structured log recording the "memory" o
 
 - **Discrepency Sequences (Mistakes) $\ell$**: Token-Level discrepancy signals quantifying the Pilot model's prediction error.
 
-  ![mistake_log](imgs/mistake_log.png)
+  ![mistake_log](assets/mistake_log.png)
 
 > The Mistake Log captures model-internal "reflection" and enables informed rectification at inference time.
 
@@ -49,7 +51,7 @@ We first introduces the *Mistake Log*, a structured log recording the "memory" o
 - The Copilot model then rectify the Pilot's logits prediction
 - The final logits are fused together for decoding and next-token generation
 
-![algorithm](imgs/algorithm.png)
+![algorithm](assets/algorithm.png)
 
 > The whole generation process repeats auto-regressively and the Copilot model is able to actively refine the Pilot model's generation without retraining or modifying the original model.
 
@@ -64,21 +66,21 @@ T-Copilot is evaluated across 12 diverse benchmarks:
 
 ### 📈 Performance Evaluation
 - 2.2%-34.5% accuracy gain on the original Pilot models accross differnt tasks and backbone model tyles
-![exp1](imgs/exp1.png)
+![exp1](assets/exp1.png)
 
 - Outperforms stronger LLMs:
   - `Qwen2.5-7B + T-Copilot-3B` > `Qwen2.5-14B`
   - `Qwen2.5-3B + T-Copilot-3B` > `Qwen2.5-7B`
   - `LLaMA-3.2-3B + T-Copilot-3B` > `LLaMA-3.1-8B`
 
-  ![exp2](imgs/exp2.png)
+  ![exp2](assets/exp2.png)
 
 ---
 ### 🔍 Analyses on Logits Rectification
 - Logits Correction by Copilot across differnt models and task categories.
-![analysis1](imgs/analysis1.png)
+![analysis1](assets/analysis1.png)
 - An illustrated example for the logits rectification process by the Copilot model. 
-![analysis2](imgs/analysis2.png)
+![analysis2](assets/analysis2.png)
 
 ---
 
@@ -86,25 +88,25 @@ T-Copilot is evaluated across 12 diverse benchmarks:
 
 - **Training overhead**: marginal ~4% extra overall runtime compred to the original Pilot model, outperform other layer adaptation baselines.
 - **Inference throughput**: Comparable to baseline Pilot models.
-![effeciency](imgs/effeciency.png)
+![effeciency](assets/effeciency.png)
 
 - **Transferability**: One Copilot can be directly generalize across similar Pilot models without additional training.
 - **Scalability**: Applicable across T5, FLAN-T5, LLaMA, Qwen, and other transformer architectures.
 
+## **Getting Started**
+
+Please refer to the `README.md` provided under `./src`
 
 
 ## **Citation**
 ```
-@misc{zou2025transformer,
-  title        = {Transformer Copilot: Learning from The Mistake Log in LLM Fine-tuning},
-  author       = {Jiaru Zou and Yikun Ban and Zihao Li and Yunzhe Qi and Ruizhong Qiu and Ling Yang and Jingrui He},
-  year         = {2025},
-  month        = {May},
-  eprint       = {2505.16270},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.CL},
-  url          = {https://arxiv.org/abs/2505.16270},
-  doi          = {10.48550/arXiv.2505.16270}
+@inproceedings{
+zou2025transformer,
+title={Transformer Copilot: Learning from The Mistake Log in {LLM} Fine-tuning},
+author={Jiaru Zou and Yikun Ban and Zihao Li and Yunzhe Qi and Ruizhong Qiu and Ling Yang and Jingrui He},
+booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
+year={2025},
+url={https://openreview.net/forum?id=MRvxlTlkNQ}
 }
 ```
 

@@ -1,0 +1,11 @@
+accelerate
+appdirs
+bitsandbytes
+black
+black[jupyter]
+datasets
+fire
+gradio
+nvitop
+transformers==4.46.2
+huggingface_hub
